@@ -1,2 +1,5 @@
 #IntellJ project configuration files
 .idea
+
+#Project build files
+bin
