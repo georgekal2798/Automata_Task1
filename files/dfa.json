@@ -1,0 +1,10 @@
+{
+    "states":3,
+    "start":0,
+    "final":[0,2],
+    "transitions":[
+        {"in":0, "out":1, "symbol":"a"},
+        {"in":1, "out":1, "symbol":"b"},
+        {"in":1, "out":2, "symbol":"a"}
+    ]
+}
