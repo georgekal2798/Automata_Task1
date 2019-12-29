@@ -97,7 +97,7 @@ public abstract class Automaton {
 			}
 		}
 		
-		System.out.println(currentStateFinal() && transitionPossible? "Yay!" : "Noooo...");
+		System.out.println("Word " + w + " is "+ (currentStateFinal() && transitionPossible?"":"not ") + "part of the automaton");
 	}
 
 	public static boolean currentStateFinal(){
@@ -129,9 +129,6 @@ public abstract class Automaton {
 			for(Transition t : s.getTransitions()) {
 				if (t.getSymbol() == c) {
 					nextState.add(t.getOutState());
-				}
-				else if (t.getSymbol() == '*'){
-					nextState.addAll(findNextState(new HashSet<State>(Collections.singleton(t.getOutState())), c));
 				}
 			}
 		}
