@@ -54,7 +54,7 @@ public abstract class UI {
         } while (input != 4); //Displays main menu until the exit option (4) is selected
     }
 
-    public static void stringInputPrompt(String option){
+    private static void stringInputPrompt(String option){
         //Accepts parameter option: "check" for checking a word, "file" for file path input
         Scanner scanner = new Scanner(System.in);
         String input = "";

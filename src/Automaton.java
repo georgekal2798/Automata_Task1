@@ -10,11 +10,11 @@ public abstract class Automaton {
 	static ArrayList<State> states = new ArrayList<State>();
 	static Set<State> currentState = new HashSet<>();
 
-    public static ArrayList<State> getStates() {
+    private static ArrayList<State> getStates() {
         return states;
     }
 
-    public static Set<State> getCurrentState() {
+    private static Set<State> getCurrentState() {
         return currentState;
     }
 
@@ -33,14 +33,14 @@ public abstract class Automaton {
     }
 
     private static String readFile(String filePath) {
-        String json = new String();
+        String file = new String();
         try {
             Scanner sc = new Scanner(new File(filePath));
             while(sc.hasNextLine()) {
-                json += sc.nextLine();
+                file += sc.nextLine();
             }
             sc.close();
-            return json;
+            return file;
         } catch (FileNotFoundException e) {
             System.out.println("File not found. Check path and try again.");
             return null;
@@ -56,10 +56,14 @@ public abstract class Automaton {
 				getStates().clear();
 				JSONObject obj = new JSONObject(json);
 				int numOfStates = obj.getInt("states");
+				//create as many states as defined in the file and add them to states
 				for(int i=0; i<numOfStates; i++) {
+				    //id for printStateDetails() method
 					State s = new State(i);
+					//sets final and start attributes
 					s.setStart(obj.getInt("start") == i);
 					s.setFinal(obj.getJSONArray("final").toList().contains(i));
+					//adds created state to the list
 					addState(s);
 				}
 
@@ -83,14 +87,14 @@ public abstract class Automaton {
 		}
 	}
 
-	public static boolean currentStateFinal(){
+	private static boolean currentStateFinal(){
 		for (State s : getCurrentState()){
 			if (s.isFinal()) return true;
 		}
 		return false;
 	}
 
-	public static Set<State> findNextState(Set<State> currentState, char c){
+	private static Set<State> findNextState(Set<State> currentState, char c){
 		Set<State> nextState = new HashSet<>(); //temporary set to store the next possible states
 		for (State s : currentState) {
 			for(Transition t : s.getTransitions()) {
@@ -115,25 +119,8 @@ public abstract class Automaton {
 
         boolean transitionPossible = true; //if current state has no possible transitions and the word reading is not completed, this flag becomes false
         for(char c : w.toCharArray()) {
-            //Debugging
-//			System.out.println("Symbol: " + c);
-//			System.out.println("Current states: " + getCurrentState().toString());
-
-//			transitionPossible = false;
-//			for (State s : getCurrentState()) {
-//				//Debugging
-////				System.out.println("Possible transitions: " + s.getTransitions().toString());
-//				for(Transition t : s.getTransitions()) {
-//					if (t.getSymbol() == c) {
-//						getNextState().add(t.getOutState());
-//						transitionPossible = true;
-//					}
-//				}
-//			}
-
             Set<State> temp = findNextState(getCurrentState(), c); //temporary set of state objects to store the next possible states
             transitionPossible = !temp.isEmpty();
-
             if (transitionPossible){
                 //Sets the newly created set to the current one
                 setCurrentState(temp);
